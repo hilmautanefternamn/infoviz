@@ -1,4 +1,9 @@
+#csv-files
 *.csv
+
+#folders
 data/
 lib/
+
+#stupid file
 .DS_Store
