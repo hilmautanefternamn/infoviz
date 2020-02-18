@@ -1,1 +1,4 @@
 *.csv
+data/
+lib/
+.DS_Store
