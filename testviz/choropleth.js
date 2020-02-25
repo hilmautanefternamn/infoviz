@@ -1,19 +1,19 @@
 
-var margin = {top: 80, right: 25, bottom: 30, left: 40},
-  width = 450 - margin.left - margin.right,
-  height = 450 - margin.top - margin.bottom;
+var marginChoro = {top: 80, right: 25, bottom: 30, left: 40},
+  width = 600 - marginChoro.left - marginChoro.right,
+  height = 600 - marginChoro.top - marginChoro.bottom;
 
 function createChoropleth(id)
 {
-   // append svg object to div with id
+  /****** SET UP MAIN DIV FOR CHOROPLETH MAP ******/
   id = "#" + id;
   var choromap = d3.select(id)
   .append("svg")
-  .attr("width", width + margin.left + margin.right)
-  .attr("height", height + margin.top + margin.bottom)
+  .attr("width", width + marginChoro.left + marginChoro.right)
+  .attr("height", height + marginChoro.top + marginChoro.bottom)
   .append("g")
   .attr("transform",
-        "translate(" + margin.left + "," + margin.top + ")");
+        "translate(" + marginChoro.left + "," + marginChoro.top + ")");
 
   // Map and projection
   var path = d3.geoPath();
@@ -22,20 +22,24 @@ function createChoropleth(id)
     .center([0,20])
     .translate([width / 2, height / 2]);
 
-  // Data and color scale
+  /****** SET UP COLOR RANGE ******/
   var data = d3.map();
   var colorScale = d3.scaleThreshold()
     .domain([100000, 1000000, 10000000, 30000000, 100000000, 500000000])
     .range(d3.schemePuRd[7]);
 
-  // Load external data and boot
+
+  /****** LOAD DATABASES ******/
   d3.queue()
     .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
     .defer(d3.csv, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world_population.csv", function(d) { data.set(d.code, +d.pop); })
     .await(ready);
 
+
+// when db's are loaded
   function ready(error, topo) {
 
+/****** MOUSE EVENTS ******/
     let mouseOver = function(d) {
       d3.selectAll(".Country")
         .transition()
@@ -47,7 +51,6 @@ function createChoropleth(id)
         .style("opacity", 1)
         .style("stroke", "black")
     }
-
     let mouseLeave = function(d) {
       d3.selectAll(".Country")
         .transition()
@@ -59,22 +62,23 @@ function createChoropleth(id)
         .style("stroke", "transparent")
     }
 
-
-    // Add title to graph
+/****** TITLE & SUBTITLE ******/
     choromap.append("text")
       .attr("transform", "translate(0, " + -50 + ")")
       .attr("text-anchor", "left")
       .style("font-size", "22px")
+      .style("font-family", "'Raleway'")
       .text("Cause of death over the regions of Sweden.");
 
-    // Add subtitle to graph
     choromap.append("text")
         .attr("transform", "translate(0, " + -20 + ")")
         .attr("text-anchor", "left")
         .style("font-size", "14px")
+        .style("font-family", "'Simonetta'")
         .style("fill", "grey")
         .style("max-width", 400)
         .text("A short description of the take-away message of this chart.");
+
 
     // Draw the map
     choromap.append("g")
@@ -96,9 +100,9 @@ function createChoropleth(id)
         .style("opacity", .8)
         .on("mouseover", mouseOver )
         .on("mouseleave", mouseLeave )   
-
   }
 }
+
 
 function createSlider()
 {
@@ -117,8 +121,9 @@ function createSlider()
     .default(2018)
     .on('onchange', val => {
       d3.select('p#current-slider-value')
+      .text(d3.format('1')(val))
       .style("font-size", "22px")
-      .text(d3.format('1')(val));
+      .style("font-family", "'Raleway'");
 
       console.log(val)
     });
@@ -135,5 +140,7 @@ function createSlider()
 
   d3.select('p#current-slider-value')
     .text(d3.format('1')(sliderVertical.value()))
-    .style("font-size", "22px");
+    .style("font-size", "22px")
+    .style("font-family", "'Raleway'");
+
 }

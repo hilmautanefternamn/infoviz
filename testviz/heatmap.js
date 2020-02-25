@@ -1,24 +1,24 @@
 
 // set the dimensions and margins of the heat maps
-var margin = {top: 80, right: 25, bottom: 30, left: 40},
-  width = 450 - margin.left - margin.right,
-  height = 450 - margin.top - margin.bottom;
+var marginHeat = {top: 80, right: 25, bottom: 30, left: 40},
+  width = 450 - marginHeat.left - marginHeat.right,
+  height = 450 - marginHeat.top - marginHeat.bottom;
 
 
 function addHeatMap(id, dataUrl, interpolation)
 {
-  // append svg object to div with id
+  /****** SET UP MAIN DIV FOR HEATMAP ******/
   id_ = "#" + id;
   var heatmap = d3.select(id_)
   .append("svg")
-  .attr("width", width + margin.left + margin.right)
-  .attr("height", height + margin.top + margin.bottom)
+  .attr("width", width + marginHeat.left + marginHeat.right)
+  .attr("height", height + marginHeat.top + marginHeat.bottom)
   .append("g")
   .attr("transform",
-        "translate(" + margin.left + "," + margin.top + ")");
+        "translate(" + marginHeat.left + "," + marginHeat.top + ")");
 
 
-  //Read the data
+  /****** READ DATA ******/
   d3.csv(dataUrl, function(data) 
   {
     // Labels of row and columns -> unique identifier of the column called 'group' and 'variable'
@@ -26,7 +26,8 @@ function addHeatMap(id, dataUrl, interpolation)
     var myVars = d3.map(data, function(d){return d.variable;}).keys()
 
 
-    // Build X scales and axis:
+    /****** SCALES & AXISES ******/
+    // x-scales & axis
     var x = d3.scaleBand()
       .range([ 0, width ])
       .domain(myGroups)
@@ -48,7 +49,7 @@ function addHeatMap(id, dataUrl, interpolation)
       .select(".domain").remove()
 
 
-    // Build color scale with given interpolation method
+    /****** COLOR SETUP WITH GIVEN INTERPOLATION METHOD ******/
     var myColor = d3.scaleSequential()
       .interpolator(interpolation)
       .domain([1,100])
@@ -57,18 +58,10 @@ function addHeatMap(id, dataUrl, interpolation)
       // var colors = colorbrewer.Set2[6];
 
 
-    // create a tooltip
-    var tooltip = d3.select(id)
-      .append("div")
-      .style("opacity", 0)
-      .attr("class", "tooltip")
-      .style("background-color", "white")
-      .style("border", "solid")
-      .style("border-width", "2px")
-      .style("border-radius", "5px")
-      .style("padding", "5px")
+    /****** CREATE TOOLTIP ******/
+    var tooltip = d3.select("p#exact-value");
 
-    // Three function that change the tooltip when user hover / move / leave a cell
+    /****** MOUSE EVENTS ******/
     var mouseover = function(d) {
       tooltip
         .style("opacity", 1)
@@ -79,8 +72,15 @@ function addHeatMap(id, dataUrl, interpolation)
     var mousemove = function(d) {
       tooltip
         .html("The exact value of this cell is: " + d.value)
-        .style("left", (d3.mouse(this)[0]+70) + "px")
-        .style("top", (d3.mouse(this)[1]) + "px")
+        .style("background-color", "white")
+        .style("border", "solid")
+        .style("border-width", "2px")
+        .style("border-radius", "5px")
+        .style("padding", "5px")
+        .style("width", "30%")
+        .style("margin-left", "auto")
+        .style("margin-right", "auto")
+        .style("text-align", "center")
     }
     var mouseleave = function(d) {
       tooltip
@@ -90,38 +90,8 @@ function addHeatMap(id, dataUrl, interpolation)
         .style("opacity", 0.8)
     }
 
-    if(id == "mental_illness")
-      id = "mental illness";
 
-    // Add title to graph
-    heatmap.append("text")
-      .attr("x", 0)
-      .attr("y", -50)
-      .attr("text-anchor", "left")
-      .style("font-size", "22px")
-      .text("Cause of death: " + id);
-
-      // Add subtitle to graph
-    heatmap.append("text")
-      .attr("x", 0)
-      .attr("y", -20)
-      .attr("text-anchor", "left")
-      .style("font-size", "14px")
-      .style("fill", "grey")
-      .style("max-width", 400)
-      .text("Number of casualties caused by " + id + ", varying over " );
-
-    heatmap.append("text")
-      .attr("x", 0)
-      .attr("y", -8)
-      .attr("text-anchor", "left")
-      .style("font-size", "14px")
-      .style("fill", "grey")
-      .style("max-width", 400)
-      .text("time in different age groups.");
-
-
-    // add the value-squares
+    /****** ADD VALUE SQUARES ******/
     heatmap.selectAll()
       .data(data, function(d) {return d.group+':'+d.variable;})
       .enter()
@@ -139,6 +109,41 @@ function addHeatMap(id, dataUrl, interpolation)
       .on("mouseover", mouseover)
       .on("mousemove", mousemove)
       .on("mouseleave", mouseleave)
+  
+
+    /****** TITLE & SUBTITLE ******/
+    if(id == "mental_illness")
+      id = "mental illness";
+
+    // Add title to graph
+    heatmap.append("text")
+      .attr("x", 0)
+      .attr("y", -50)
+      .attr("text-anchor", "left")
+      .style("font-size", "22px")
+      .style("font-family", "'Raleway'")
+      .text("Cause of death: " + id);
+
+      // Add subtitle to graph
+    heatmap.append("text")
+      .attr("x", 0)
+      .attr("y", -25)
+      .attr("text-anchor", "left")
+      .style("font-size", "14px")
+      .style("font-family", "'Simonetta'")
+      .style("fill", "grey")
+      .style("max-width", 400)
+      .text("Number of casualties caused by " + id + ", varying over " );
+
+    heatmap.append("text")
+      .attr("x", 0)
+      .attr("y", -10)
+      .attr("text-anchor", "left")
+      .style("font-size", "14px")
+      .style("font-family", "'Simonetta'")
+      .style("fill", "grey")
+      .style("max-width", 400)
+      .text("time in different age groups.");
   })
 }
 

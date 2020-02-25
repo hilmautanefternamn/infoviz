@@ -1,6 +1,37 @@
-body
+/*	imported fonts:
+font-family: 'Raleway', ;
+font-family: 'Simonetta', ;*/
+
+#heatmaps, #mapView
 {
 	display: flex;
 	flex-wrap: wrap;
+}
+
+#exact-value
+{
+	height: 22px;
+	padding: 5px;
+	margin-left: auto;
+	margin-right: auto;
+	position: fixed;
+}
+
+h1
+{
+	text-transform: uppercase;
+	letter-spacing: 5px;
+	line-height: 0.6;
+	font-family: 'Raleway';
+	font-size: 60px;
+}
+
+h4
+{
+	font-family: 'Simonetta';
+	font-size: 25px;
+	color: gray;
+	width: 70%;
+	border-bottom: double black 1px;
 }
 
