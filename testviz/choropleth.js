@@ -1,12 +1,19 @@
 
+var margin = {top: 80, right: 25, bottom: 30, left: 40},
+  width = 450 - margin.left - margin.right,
+  height = 450 - margin.top - margin.bottom;
+
 function createChoropleth(id)
 {
    // append svg object to div with id
   id = "#" + id;
   var choromap = d3.select(id)
   .append("svg")
-  .attr("width", 400)
-  .attr("height", 300);
+  .attr("width", width + margin.left + margin.right)
+  .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+  .attr("transform",
+        "translate(" + margin.left + "," + margin.top + ")");
 
   // Map and projection
   var path = d3.geoPath();
@@ -52,6 +59,23 @@ function createChoropleth(id)
         .style("stroke", "transparent")
     }
 
+
+    // Add title to graph
+    choromap.append("text")
+      .attr("transform", "translate(0, " + -50 + ")")
+      .attr("text-anchor", "left")
+      .style("font-size", "22px")
+      .text("Cause of death over the regions.");
+
+    // Add subtitle to graph
+    choromap.append("text")
+        .attr("transform", "translate(0, " + -20 + ")")
+        .attr("text-anchor", "left")
+        .style("font-size", "14px")
+        .style("fill", "grey")
+        .style("max-width", 400)
+        .text("A short description of the take-away message of this chart.");
+
     // Draw the map
     choromap.append("g")
       .selectAll("path")
@@ -72,5 +96,8 @@ function createChoropleth(id)
         .style("opacity", .8)
         .on("mouseover", mouseOver )
         .on("mouseleave", mouseLeave )
+
+    
+
   }
 }
