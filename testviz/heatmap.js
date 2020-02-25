@@ -78,7 +78,7 @@ function addHeatMap(id, dataUrl, interpolation)
     }
     var mousemove = function(d) {
       tooltip
-        .html("The exact value of<br>this cell is: " + d.value)
+        .html("The exact value of this cell is: " + d.value)
         .style("left", (d3.mouse(this)[0]+70) + "px")
         .style("top", (d3.mouse(this)[1]) + "px")
     }

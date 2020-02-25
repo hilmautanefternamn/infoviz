@@ -26,7 +26,7 @@ function createChoropleth(id)
   var data = d3.map();
   var colorScale = d3.scaleThreshold()
     .domain([100000, 1000000, 10000000, 30000000, 100000000, 500000000])
-    .range(d3.schemeBlues[7]);
+    .range(d3.schemePuRd[7]);
 
   // Load external data and boot
   d3.queue()
