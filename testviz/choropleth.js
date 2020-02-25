@@ -65,7 +65,7 @@ function createChoropleth(id)
       .attr("transform", "translate(0, " + -50 + ")")
       .attr("text-anchor", "left")
       .style("font-size", "22px")
-      .text("Cause of death over the regions.");
+      .text("Cause of death over the regions of Sweden.");
 
     // Add subtitle to graph
     choromap.append("text")
@@ -95,9 +95,45 @@ function createChoropleth(id)
         .attr("class", function(d){ return "Country" } )
         .style("opacity", .8)
         .on("mouseover", mouseOver )
-        .on("mouseleave", mouseLeave )
-
-    
+        .on("mouseleave", mouseLeave )   
 
   }
+}
+
+function createSlider()
+{
+
+  var data = [1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 
+  2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018];
+
+ // Vertical
+  var sliderVertical = d3.sliderLeft()
+    .min(d3.min(data))
+    .max(d3.max(data))
+    .height(300)
+    .tickFormat(d3.format('1'))
+    .ticks(22)
+    .step(1)
+    .default(2018)
+    .on('onchange', val => {
+      d3.select('p#current-slider-value')
+      .style("font-size", "22px")
+      .text(d3.format('1')(val));
+
+      console.log(val)
+    });
+
+  var gVertical = d3
+    .select('div#slider-vertical')
+    .append('svg')
+    .attr('width', 100)
+    .attr('height', 400)
+    .append('g')
+    .attr('transform', 'translate(60,30)');
+
+  gVertical.call(sliderVertical);
+
+  d3.select('p#current-slider-value')
+    .text(d3.format('1')(sliderVertical.value()))
+    .style("font-size", "22px");
 }

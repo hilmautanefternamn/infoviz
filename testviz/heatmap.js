@@ -8,8 +8,8 @@ var margin = {top: 80, right: 25, bottom: 30, left: 40},
 function addHeatMap(id, dataUrl, interpolation)
 {
   // append svg object to div with id
-  id = "#" + id;
-  var heatmap = d3.select(id)
+  id_ = "#" + id;
+  var heatmap = d3.select(id_)
   .append("svg")
   .attr("width", width + margin.left + margin.right)
   .attr("height", height + margin.top + margin.bottom)
@@ -90,23 +90,35 @@ function addHeatMap(id, dataUrl, interpolation)
         .style("opacity", 0.8)
     }
 
+    if(id == "mental_illness")
+      id = "mental illness";
+
     // Add title to graph
     heatmap.append("text")
-        .attr("x", 0)
-        .attr("y", -50)
-        .attr("text-anchor", "left")
-        .style("font-size", "22px")
-        .text("Cause of death:" + id);
+      .attr("x", 0)
+      .attr("y", -50)
+      .attr("text-anchor", "left")
+      .style("font-size", "22px")
+      .text("Cause of death: " + id);
 
       // Add subtitle to graph
     heatmap.append("text")
-        .attr("x", 0)
-        .attr("y", -20)
-        .attr("text-anchor", "left")
-        .style("font-size", "14px")
-        .style("fill", "grey")
-        .style("max-width", 400)
-        .text("A short description of the take-away message of this chart.");
+      .attr("x", 0)
+      .attr("y", -20)
+      .attr("text-anchor", "left")
+      .style("font-size", "14px")
+      .style("fill", "grey")
+      .style("max-width", 400)
+      .text("Number of casualties caused by " + id + ", varying over " );
+
+    heatmap.append("text")
+      .attr("x", 0)
+      .attr("y", -8)
+      .attr("text-anchor", "left")
+      .style("font-size", "14px")
+      .style("fill", "grey")
+      .style("max-width", 400)
+      .text("time in different age groups.");
 
 
     // add the value-squares
