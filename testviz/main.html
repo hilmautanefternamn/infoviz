@@ -1,0 +1,52 @@
+<!-- Code from d3-graph-gallery.com -->
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<!-- Load d3.js -->
+<script src="./lib/d3/d3.min.js"></script>
+<!-- map stuffs -->
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+
+<!-- Load color palettes -->
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
+<!--dunno if we want tha brewer-->
+<script src="./lib/colorbrewer/colorbrewer.js" type='text/javascript'></script> 
+
+<!-- Load js -->
+<script src="heatmap.js" type='text/javascript'></script>
+<script src="choropleth.js" type='text/javascript'></script>
+
+<link rel="stylesheet" href="main.css">
+
+<body>
+  <!-- Create divs where the graphs will take place -->
+  <div id="dead1"></div>
+  <div id="dead2"></div>
+  <div id="dead3"></div>
+  <div id="dead4"></div>
+
+  <!-- Create an element where the map will take place -->
+  <div id="choroMap"></div>
+</body>
+
+
+<!-- create heatmaps -->
+<script>
+  // set url to data
+  var data1 = "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/heatmap_data.csv";
+
+  // create 4 heat maps
+  addHeatMap("dead1", data1, d3.interpolateWarm);
+  addHeatMap("dead2", data1, d3.interpolateInferno);
+  addHeatMap("dead3", data1, d3.interpolateRainbow);
+  addHeatMap("dead4", data1, d3.interpolateCubehelixDefault);
+
+  createChoropleth("choroMap");
+
+</script>
+
+
+
+
