@@ -25,7 +25,6 @@ function addHeatMap(id, dataUrl, interpolation)
     var myGroups = d3.map(data, function(d){return d.group;}).keys()
     var myVars = d3.map(data, function(d){return d.variable;}).keys()
 
-
     /****** SCALES & AXISES ******/
     // x-scales & axis
     var x = d3.scaleBand()

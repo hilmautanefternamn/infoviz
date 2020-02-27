@@ -29,9 +29,16 @@
 
 
 <body>
-  
-  <h1>Cause of death</h1>
-  <h4>A study of what is causing casualties in Sweden throughout the years of 1997-2018, considering different age groups.</h4>
+  <div id="header">
+    <h1>Cause of death</h1>
+    <h4>A study of what is causing casualties in Sweden throughout the years of 1997-2018, considering different age groups.</h4>
+  </div>
+
+  <div id="colorRange">
+    <img src="https://raw.githubusercontent.com/d3/d3-scale-chromatic/master/img/Greys.png", height="30px" width="100%">
+    <div id="rangeAxis"></div>
+  </div>
+
 
   <!-- Create divs where the graphs will take place -->
   <div id="valueBox">
@@ -63,12 +70,40 @@
   // set url to data
   var data1 = "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/heatmap_data.csv";
 
+
+// range axis
+d3.csv(data1, function(data) 
+{  
+
+  // parse values strings to floats
+  var values = d3.map(data, function(d){return d.value;}).keys(); 
+  for(var i = 0; i < values.length; ++i)
+  {
+    values[i] = parseFloat(values[i]);
+  }
+
+  // map [min, max] to [0,width]
+  var rangeX = d3.scaleLinear()
+    .range([0, window.innerWidth*0.7])
+    .domain( [Math.min(...values), Math.max(...values)] )
+  var axis = d3.select("#rangeAxis").append("g")
+    .style("font-size", 15)
+    .call(d3.axisBottom(rangeX))
+    .select(".domain").remove();
+
+
+    //console.log(values)
+    //console.log(Math.min(...values))
+    //console.log(Math.max(...values))
+    //console.log( ( d3.map(data, function(d){return d.value;}).keys() ))
+})
+
   // create 4 heat maps
   // args:    cause of death,   dataset,    colorrange 
-  addHeatMap("disease", data1, d3.interpolateWarm);
-  addHeatMap("violence", data1, d3.interpolateInferno);
-  addHeatMap("mental_illness", data1, d3.interpolateRainbow);
-  addHeatMap("traffic", data1, d3.interpolateCubehelixDefault);
+  addHeatMap("disease", data1, d3.interpolateBlues);
+  addHeatMap("violence", data1, d3.interpolateGreens);
+  addHeatMap("mental_illness", data1, d3.interpolatePurples);
+  addHeatMap("traffic", data1, d3.interpolateReds);
 
   createSlider();
   createChoropleth("choroMap");
