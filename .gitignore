@@ -2,7 +2,6 @@
 *.csv
 
 #folders
-data/
 lib/
 
 #stupid file
