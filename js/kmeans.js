@@ -20,7 +20,6 @@ function kmeans(data, k) {
 	
     //Parse the data from strings to floats
     var new_array = parseData(data);
-	
 
     //Task 4.1 - Select random k centroids
     var centroid = initCentroids(new_array,k);
