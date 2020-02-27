@@ -1,7 +1,7 @@
 
-var marginChoro = {top: 80, right: 25, bottom: 30, left: 40},
-  width = 600 - marginChoro.left - marginChoro.right,
-  height = 600 - marginChoro.top - marginChoro.bottom;
+var margin = {top: 80, right: 25, bottom: 30, left: 40},
+  width = 600 - margin.left - margin.right,
+  height = 600 - margin.top - margin.bottom;
 
 function createChoropleth(id)
 {
@@ -9,11 +9,11 @@ function createChoropleth(id)
   id = "#" + id;
   var choromap = d3.select(id)
   .append("svg")
-  .attr("width", width + marginChoro.left + marginChoro.right)
-  .attr("height", height + marginChoro.top + marginChoro.bottom)
+  .attr("width", width + margin.left + margin.right)
+  .attr("height", height + margin.top + margin.bottom)
   .append("g")
   .attr("transform",
-        "translate(" + marginChoro.left + "," + marginChoro.top + ")");
+        "translate(" + margin.left + "," + margin.top + ")");
 
   // Map and projection
   var path = d3.geoPath();
