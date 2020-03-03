@@ -19,11 +19,11 @@ function addHeatMap(id, data, interpolation, domain)
 
 
   /****** READ DATA ******/
- // d3.csv(dataUrl, function(data) 
   {
     // Labels of row and columns -> unique identifier of the column called 'group' and 'variable'
     var xLabels = d3.map(data, function(d){return d.Year;}).keys()
     var yLabels = d3.map(data, function(d){return d.Age;}).keys()
+    yLabels.sort(function (a,b) {return a - b;});
 
  //   console.log(xLabels)
  //   console.log(yLabels)

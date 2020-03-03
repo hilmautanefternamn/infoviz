@@ -34,6 +34,7 @@
     <div id="foreground">
       <h1>Cause of death</h1>
       <h4>A study of what is causing casualties in Sweden throughout the years of 1997-2018, considering different age groups.</h4>
+      <p></p>
     </div>
   </div>
 
@@ -72,13 +73,14 @@
   // set url to data
   var data1 = "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/heatmap_data.csv";
 
-var data = "data/finaldead.csv"
+var data = "data/finaldeadper100000.csv"
 
 // prepare data for heatmaps
 d3.csv(data, function(data) 
 { 
   // range axis
 //  createColorRangeAxis(data);
+  countPeople(data);
 
   // 1 - cause of death: disease
   var disease_data = selectData(data, 1);
@@ -97,23 +99,35 @@ d3.csv(data, function(data)
   console.log(violence_data)
   console.log(traffic_data)*/
 
-  addHeatMap("disease", disease_data, d3.interpolateBlues, [100,160000]);
-  addHeatMap("violence", mental_illness_data, d3.interpolateGreens, [1,14000]);
-  addHeatMap("mental_illness", violence_data, d3.interpolatePurples, [1,150]);
-  addHeatMap("traffic", traffic_data, d3.interpolateReds, [1,800]);
+  addHeatMap("disease", disease_data, d3.interpolateBlues, [100,15000]);
+  addHeatMap("violence", mental_illness_data, d3.interpolateGreens, [1,2000]);
+  addHeatMap("mental_illness", violence_data, d3.interpolatePurples, [1,10]);
+  addHeatMap("traffic", traffic_data, d3.interpolateReds, [1,80]);
 
 })
 
-
-  // create 4 heat maps
-  // args:    cause of death,   dataset,    colorrange 
-  /*addHeatMap("disease", data1, d3.interpolateBlues);
-  addHeatMap("violence", data1, d3.interpolateGreens);
-  addHeatMap("mental_illness", data1, d3.interpolatePurples);
-  addHeatMap("traffic", data1, d3.interpolateReds);*/
-
   createSlider();
   createChoropleth("choroMap");
+
+function countPeople(data)
+{
+  var result = {"1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0, "7": 0, 
+  "8": 0, "9": 0, "10": 0, "11": 0, "12": 0, "13": 0, "14": 0, "15": 
+  0, "16": 0, "17": 0, "18": 0, "19": 0};
+
+ data.map(function(d)
+ {
+    for(var i = 1; i < 20; ++i)
+    {
+      if(d.Region == 0 && d.Age == i)
+        result[i] += parseFloat(d.Value);
+    }
+ }) 
+
+ console.log(result)
+ return result;
+
+}
 
 function selectData(data, diagnosis)
 {
