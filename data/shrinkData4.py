@@ -22,7 +22,7 @@ for year in range(1997, 2019):
         for diagnos in range(1,5):
             rows_3 = rows_2.loc[df['Diagnos'] == diagnos]
 
-            for age in range(1,5):
+            for age in range(1,20):
                 rows_4 = rows_3.loc[df['Ålder'] == age]
 
                 # Sum all values in rows_4
