@@ -2,7 +2,7 @@ import csv
 
 # This file saves only the wanted diagnoses and renames them
 
-with open('dead1.csv', 'r') as f_input, open('dead2.csv', 'w') as f_output:
+with open('deadper100000_1.csv', 'r') as f_input, open('deadper100000_2.csv', 'w') as f_output:
     csv_output = csv.writer(f_output, delimiter=';')
 
     data = csv.reader(f_input, delimiter=';')

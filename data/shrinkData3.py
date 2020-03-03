@@ -2,14 +2,12 @@ import csv
 import pandas as pd
 import numpy as np
 
-df = pd.read_csv('dead2.csv', delimiter = ';')     
+df = pd.read_csv('deadper100000_2.csv', delimiter = ';', decimal = ',')     
 
 
 
-print(df[['Region', 'Ålder']])
+# print(df[['Region', 'Ålder']])
 
-
-#df.to_csv(r'dead3.csv')
 
 temp_val = df.loc[0, 'Värde']
 
@@ -28,7 +26,14 @@ for i in range(1, len(df)):
             #print ('if 2')
 
             # sum up values into temp_val
-            temp_val += int(df.loc[i, 'Värde'])
+            # if ',' in df.loc[i, 'Värde']:
+            #     # exchange comma for period. 
+            #     df.loc[i, 'Värde'].replace(',', '.')
+            # print (df.loc[i, 'Värde'])
+
+            # print (type(df.loc[i, 'Värde']))
+            temp_val += df.loc[i, 'Värde']
+
             #print (temp_val)
             # set current Värde to false
             df.loc[i-1, 'Värde'] = False
@@ -43,7 +48,7 @@ for i in range(1, len(df)):
 
 
         # reset temp_val
-        temp_val = int(df.loc[i, "Värde"])
+        temp_val = df.loc[i, "Värde"]
 
         # set current Värde to false
         df.loc[i, 'Värde'] = False
@@ -52,7 +57,7 @@ for i in range(1, len(df)):
 # Write with filter
 df = df[df.Värde != False]
 
-df.to_csv('dead3.csv', sep = ';', index = False)
+df.to_csv('deadper100000_3.csv', sep = ';', index = False)
 
 # TODO
 # make a fourth script that adds the values of all rows that has same

@@ -2,7 +2,7 @@ import csv
 import pandas as pd
 import numpy as np
 
-df = pd.read_csv('dead3.csv', delimiter = ';')     
+df = pd.read_csv('deadper100000_3.csv', delimiter = ';')     
 
 
 
@@ -48,4 +48,4 @@ for year in range(1997, 2019):
 # # Write with filter
 df = df[df.Mått == False]
 
-df.to_csv('finaldead.csv', sep = ';', index = False)
+df.to_csv('finaldeadper100000.csv', sep = ';', index = False)
