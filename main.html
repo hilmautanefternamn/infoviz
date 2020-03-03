@@ -30,13 +30,16 @@
 
 <body>
   <div id="header">
-    <h1>Cause of death</h1>
-    <h4>A study of what is causing casualties in Sweden throughout the years of 1997-2018, considering different age groups.</h4>
+    <div id="background"></div>
+    <div id="foreground">
+      <h1>Cause of death</h1>
+      <h4>A study of what is causing casualties in Sweden throughout the years of 1997-2018, considering different age groups.</h4>
+    </div>
   </div>
 
   <div id="colorRange">
     <img src="https://raw.githubusercontent.com/d3/d3-scale-chromatic/master/img/Greys.png", height="30px" width="100%">
-    <div id="rangeAxis"></div>
+    <div id="rangeAxis" class="fulljustify"></div>
   </div>
 
 
@@ -86,7 +89,7 @@ d3.csv(data1, function(data)
   var rangeX = d3.scaleLinear()
     .range([0, window.innerWidth*0.7])
     .domain( [Math.min(...values), Math.max(...values)] )
-  var axis = d3.select("#rangeAxis").append("g")
+  var axis = d3.select("#rangeAxis").append("text")
     .style("font-size", 15)
     .call(d3.axisBottom(rangeX))
     .select(".domain").remove();
