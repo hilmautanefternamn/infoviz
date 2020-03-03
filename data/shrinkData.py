@@ -1,8 +1,18 @@
 import csv
 
 # This file saves only the wanted diagnoses and renames them
+# Disease gets labeled 1
+# Mental illness 2
+# Violence 3
+# Traffic accidents 4
 
-with open('deadper100000.csv', 'r') as f_input, open('deadper100000_1.csv', 'w') as f_output:
+# IN AND OUTPUT NAMES
+# deadper100000
+# deadper100000_1
+# dead
+# dead1
+
+with open('dead.csv', 'r') as f_input, open('dead1.csv', 'w') as f_output:
     csv_output = csv.writer(f_output, delimiter = ';')
 
     data = csv.reader(f_input, delimiter = ';');

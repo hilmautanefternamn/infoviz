@@ -1,8 +1,16 @@
 import csv
 
-# This file saves only the wanted diagnoses and renames them
+# This file groups age groups
+# Or renames age group 99 to 19. Depending on which part of the code u run
 
-with open('deadper100000_1.csv', 'r') as f_input, open('deadper100000_2.csv', 'w') as f_output:
+# IN AND OUTPUT NAMES
+# deadper100000_1
+# deadper100000_2
+# dead1
+# dead2
+
+
+with open('dead1.csv', 'r') as f_input, open('dead2.csv', 'w') as f_output:
     csv_output = csv.writer(f_output, delimiter=';')
 
     data = csv.reader(f_input, delimiter=';')
