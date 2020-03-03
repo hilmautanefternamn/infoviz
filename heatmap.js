@@ -1,8 +1,8 @@
 
 // set the dimensions and margins of the heat maps
-var margin = {top: 80, right: 25, bottom: 30, left: 40},
-  width_ = 550 - margin.left - margin.right,
-  height_ = 550 - margin.top - margin.bottom;
+var margin = {top: 80, right: 0, bottom: 60, left: 140},
+  width_ = 625 - margin.left - margin.right,
+  height_ = 580 - margin.top - margin.bottom;
 
 
 function addHeatMap(dataType, id, data, interpolation, domain)
@@ -20,7 +20,7 @@ function addHeatMap(dataType, id, data, interpolation, domain)
 
   /****** READ DATA ******/
   {
-    // Labels of row and columns -> unique identifier of the column called 'group' and 'variable'
+    // Labels of row and columns
     var xLabels = d3.map(data, function(d){return d.Year;}).keys()
     var yLabels;
     if(dataType == "ageGroups")
@@ -44,7 +44,7 @@ function addHeatMap(dataType, id, data, interpolation, domain)
       .domain(xLabels)
       .padding(0.05);
     heatmap.append("g")
-      .style("font-size", 15)
+      .style("font-size", 12)
       .attr("transform", "translate(0," + height_ + ")")
       .call(d3.axisBottom(x).tickSize(0))
       .select(".domain").remove()
@@ -55,9 +55,10 @@ function addHeatMap(dataType, id, data, interpolation, domain)
       .domain(yLabels)
       .padding(0.05);
     heatmap.append("g")
-      .style("font-size", 15)
+      .style("font-size", 12)
       .call(d3.axisLeft(y).tickSize(0))
       .select(".domain").remove()
+
 
 
     /****** COLOR SETUP WITH GIVEN INTERPOLATION METHOD ******/

@@ -104,7 +104,7 @@ d3.csv(data, function(data)
   var senior_data = selectAgeGroupData(data, 4);
 
   addHeatMap("ageGroups", "Children", child_data, d3.interpolateBlues, [0,80]);
-  addHeatMap("ageGroups", "Young_Adults", young_adult_data, d3.interpolateGreens, [1,20]);
+  addHeatMap("ageGroups", "Young_Adults", young_adult_data, d3.interpolateGreens, [1,25]);
   addHeatMap("ageGroups", "Adults", adult_data, d3.interpolatePurples, [1,80]);
   addHeatMap("ageGroups", "Seniors", senior_data, d3.interpolateReds, [1,30000]);
 
@@ -125,7 +125,7 @@ function ageGroupButton()
   firstClick = false;
 }
 
-
+var diagnoses = {"1": "disease", "2": "violence", "3":"mental illness", "4": "traffic" };
 // Data preparation for age groups heatmaps 
 // selects data related to a specified age group 
 function selectAgeGroupData(data, age)
@@ -135,7 +135,7 @@ var return_data = data.map(function(d)
   if(d.Region == 0 && d.Age == age){
     return {
       Year: d.Year.substr(2, d.Year.length),
-      Diagnosis: d.Diagnosis,
+      Diagnosis: diagnoses[d.Diagnosis],
       Value: d.Value
     }
   }
