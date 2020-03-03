@@ -23,7 +23,10 @@ function addHeatMap(id, data, interpolation, domain)
     // Labels of row and columns -> unique identifier of the column called 'group' and 'variable'
     var xLabels = d3.map(data, function(d){return d.Year;}).keys()
     var yLabels = d3.map(data, function(d){return d.Age;}).keys()
-    yLabels.sort(function (a,b) {return a - b;});
+    yLabels.sort(function (a,b) 
+    {
+      return parseFloat(a.substr(0,2)) - parseFloat(b.substr(0,2));
+    });
 
  //   console.log(xLabels)
  //   console.log(yLabels)
