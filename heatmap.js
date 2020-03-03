@@ -5,7 +5,7 @@ var margin = {top: 80, right: 25, bottom: 30, left: 40},
   height_ = 550 - margin.top - margin.bottom;
 
 
-function addHeatMap(id, data, interpolation, domain)
+function addHeatMap(dataType, id, data, interpolation, domain)
 {
   /****** SET UP MAIN DIV FOR HEATMAP ******/
   id_ = "#" + id;
@@ -22,14 +22,20 @@ function addHeatMap(id, data, interpolation, domain)
   {
     // Labels of row and columns -> unique identifier of the column called 'group' and 'variable'
     var xLabels = d3.map(data, function(d){return d.Year;}).keys()
-    var yLabels = d3.map(data, function(d){return d.Age;}).keys()
-    yLabels.sort(function (a,b) 
+    var yLabels;
+    if(dataType == "ageGroups")
+    { 
+      yLabels = d3.map(data, function(d){return d.Diagnosis;}).keys()
+      yLabels.sort(); 
+    }
+    else
     {
-      return parseFloat(a.substr(0,2)) - parseFloat(b.substr(0,2));
-    });
+      yLabels = d3.map(data, function(d){return d.Age;}).keys()
+      yLabels.sort(function (a,b) 
+      { return parseFloat(a.substr(0,2)) - parseFloat(b.substr(0,2)); });
+    }
+    
 
- //   console.log(xLabels)
- //   console.log(yLabels)
 
     /****** SCALES & AXISES ******/
     // x-scales & axis
@@ -58,9 +64,6 @@ function addHeatMap(id, data, interpolation, domain)
     var myColor = d3.scaleSequential()
       .interpolator(interpolation)
       .domain(domain)
-
-      // colorbrewer ? 
-      // var colors = colorbrewer.Set2[6];
 
 
     /****** CREATE TOOLTIP ******/
@@ -100,11 +103,20 @@ function addHeatMap(id, data, interpolation, domain)
 
     /****** ADD VALUE SQUARES ******/
     heatmap.selectAll()
-      .data(data, function(d) {return d.Year+':'+d.Age;})
+      .data(data, function(d) 
+      {
+        if(dataType == "ageGroups")
+          return d.Year+':'+d.Diagnosis;
+        return d.Year+':'+d.Age;
+      })
       .enter()
       .append("rect")
-        .attr("x", function(d) { return x(d.Year) })
-        .attr("y", function(d) { return y(d.Age) })
+        .attr("x", function(d){return x(d.Year)})
+        .attr("y", function(d) 
+          { if(dataType == "ageGroups")
+              return y(d.Diagnosis);
+            return y(d.Age);
+          })
         .attr("rx", 4)
         .attr("ry", 4)
         .attr("width", x.bandwidth() )
@@ -122,6 +134,21 @@ function addHeatMap(id, data, interpolation, domain)
     if(id == "mental_illness")
       id = "mental illness";
 
+    if(id == "Young_Adults")
+      id = "Young Adults";
+
+    var title = "Cause of death: ";
+    var sub1 = "Number of casualties caused by " + id + ", varying over ";
+    var sub2 = "time in different age groups.";
+
+    if(dataType == "ageGroups")
+    {
+      title = "Cause of death among: " ;
+      sub1 = "Number of casualties among " + id + ", caused ";
+      sub2 = " by different different diagnoses"
+    }
+
+
     // Add title to graph
     heatmap.append("text")
       .attr("x", 0)
@@ -129,7 +156,7 @@ function addHeatMap(id, data, interpolation, domain)
       .attr("text-anchor", "left")
       .style("font-size", "22px")
       .style("font-family", "'Raleway'")
-      .text("Cause of death: " + id);
+      .text(title + id);
 
       // Add subtitle to graph
     heatmap.append("text")
@@ -140,7 +167,7 @@ function addHeatMap(id, data, interpolation, domain)
       .style("font-family", "'Simonetta'")
       .style("fill", "grey")
       .style("max-width", 400)
-      .text("Number of casualties caused by " + id + ", varying over " );
+      .text(sub1);
 
     heatmap.append("text")
       .attr("x", 0)
@@ -150,7 +177,7 @@ function addHeatMap(id, data, interpolation, domain)
       .style("font-family", "'Simonetta'")
       .style("fill", "grey")
       .style("max-width", 400)
-      .text("time in different age groups.");
+      .text(sub2);
   }
 }
 

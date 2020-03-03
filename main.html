@@ -20,6 +20,7 @@
 <script src="./lib/colorbrewer/colorbrewer.js" type='text/javascript'></script> 
 
 <!-- Load js modules -->
+<script src="main.js" type='text/javascript'></script>
 <script src="heatmap.js" type='text/javascript'></script>
 <script src="choropleth.js" type='text/javascript'></script>
 
@@ -34,7 +35,9 @@
     <div id="foreground">
       <h1>Cause of death</h1>
       <h4>A study of what is causing casualties in Sweden throughout the years of 1997-2018, considering different age groups.</h4>
-      <p></p>
+      <a href="https://sdb.socialstyrelsen.se/if_dor/val.aspx?fbclid=IwAR30oVsRvjnZDuGPpaxPBUD7ornmfU0JLcySLxH_Db-2MmuoWpk4L-BYt4w">source of data</a>
+      <button type="button" onclick="ageGroupButton()">Age Groups</button>
+      <button type="button" onclick="diagnosesButton()">Diagnoses</button>
     </div>
   </div>
 
@@ -44,12 +47,14 @@
     <div id="rangeAxis" class="fulljustify"></div>
   </div>
 -->
-
+    
   <!-- Create divs where the graphs will take place -->
   <div id="valueBox">
     <p id="exact-value"></p> <!--"exact value of this cell is: "-->
   </div>
-  <div id="maps"> <!-- container for flex -->
+  <div id="diagnosisMaps"> <!-- container for flex -->
+
+    <!-- for diagnosis heatmaps -->
     <div id="disease"></div>
     <div id="violence"></div>
     <div id="mental_illness"></div>
@@ -65,111 +70,22 @@
     </div>
   </div>
 
+  <div id="ageGroupMaps"> <!-- container for flex -->
+      <!-- for age groups heatmaps -->
+    <div id="Children"></div>
+    <div id="Young_Adults"></div>
+    <div id="Adults"></div>
+    <div id="Seniors"></div>
+  </div>
+
 </body>
 
-
-<!-- create heatmaps -->
 <script>
-  // map age groups
-  var ageGroups = {"1": "0-4", "2": "5-6", "3": "10-24", "4": "15-19", 
-  "5": "20-24", "6": "25-29", "7": "30-34", "8": "35-39", "9": "40-44", 
-  "10": "45-49", "11": "50-54", "12": "55-59", "13": "60-64", "14": "65-69", 
-  "15": "70-74", "16": "75-79", "17": "80-84", "18": "85+"};
-
-  var data = "data/finaldeadper100000.csv"
-
-  // prepare data for heatmaps
-  d3.csv(data, function(data) 
-  { 
-    // 1 - cause of death: disease
-    var disease_data = selectData(data, 1);
-
-    // 2 - cause of death: mental illness
-    var mental_illness_data = selectData(data, 2);
-
-    //3 - cause of death: violence
-    var violence_data = selectData(data, 3);
-
-    //4 - cause of death: traffic
-    var traffic_data = selectData(data, 4);
-    
-    addHeatMap("disease", disease_data, d3.interpolateBlues, [100,15000]);
-    addHeatMap("violence", mental_illness_data, d3.interpolateGreens, [1,2000]);
-    addHeatMap("mental_illness", violence_data, d3.interpolatePurples, [0,5]);
-    addHeatMap("traffic", traffic_data, d3.interpolateReds, [1,10]);
-
-  })
-    /******   NO MAP ATM :C
+  /******   NO MAP ATM :C
     createSlider();
     createChoropleth("choroMap");
     */
-
-   // Select data related to a specified cause of death 
-  function selectData(data, diagnosis)
-  {
-    var return_data = data.map(function(d)
-    { 
-      if(d.Region == 0 && d.Diagnosis == diagnosis && d.Age != 19){
-        return {
-          Year: d.Year.substr(2, d.Year.length),
-          Age: ageGroups[d.Age],
-          Value: d.Value
-        }
-      }
-    })
-
-    // remove undefined slots
-    return_data = return_data.filter(function( element ) {
-     return element !== undefined;
-    })
-
-    return return_data;
-  }
-
-
-
-
-  /***** NOT USED ATM ******/
-
-  function countPeople(data)
-  {
-    var result = {"1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0, "7": 0, 
-    "8": 0, "9": 0, "10": 0, "11": 0, "12": 0, "13": 0, "14": 0, "15": 
-    0, "16": 0, "17": 0, "18": 0, "19": 0};
-
-   data.map(function(d)
-   {
-      for(var i = 1; i < 20; ++i)
-      {
-        if(d.Region == 0 && d.Age == i)
-          result[i] += parseFloat(d.Value);
-      }
-   }) 
-   return result;
-  }
-
-  // relate color intensity to number of deaths
-  function createColorRangeAxis(data)
-  {
-    // parse values strings to floats
-    var values = d3.map(data, function(d){return d.Value;}).keys(); 
-    for(var i = 0; i < values.length; ++i)
-    {
-      values[i] = parseFloat(values[i]);
-    }
-
-    // map [min, max] to [0,width]
-    var rangeX = d3.scaleLinear()
-      .range([0, window.innerWidth*0.7])
-      .domain( [Math.min(...values), Math.max(...values)] )
-    var axis = d3.select("#rangeAxis").append("text")
-      .style("font-size", 15)
-      .call(d3.axisBottom(rangeX))
-      .select(".domain").remove();
-  }
-
 </script>
-
 
 
 
