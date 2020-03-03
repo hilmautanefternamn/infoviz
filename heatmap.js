@@ -1,11 +1,11 @@
 
 // set the dimensions and margins of the heat maps
 var margin = {top: 80, right: 25, bottom: 30, left: 40},
-  width_ = 450 - margin.left - margin.right,
-  height_ = 450 - margin.top - margin.bottom;
+  width_ = 550 - margin.left - margin.right,
+  height_ = 550 - margin.top - margin.bottom;
 
 
-function addHeatMap(id, dataUrl, interpolation)
+function addHeatMap(id, data, interpolation, domain)
 {
   /****** SET UP MAIN DIV FOR HEATMAP ******/
   id_ = "#" + id;
@@ -19,17 +19,20 @@ function addHeatMap(id, dataUrl, interpolation)
 
 
   /****** READ DATA ******/
-  d3.csv(dataUrl, function(data) 
+ // d3.csv(dataUrl, function(data) 
   {
     // Labels of row and columns -> unique identifier of the column called 'group' and 'variable'
-    var myGroups = d3.map(data, function(d){return d.group;}).keys()
-    var myVars = d3.map(data, function(d){return d.variable;}).keys()
+    var xLabels = d3.map(data, function(d){return d.Year;}).keys()
+    var yLabels = d3.map(data, function(d){return d.Age;}).keys()
+
+ //   console.log(xLabels)
+ //   console.log(yLabels)
 
     /****** SCALES & AXISES ******/
     // x-scales & axis
     var x = d3.scaleBand()
       .range([ 0, width_ ])
-      .domain(myGroups)
+      .domain(xLabels)
       .padding(0.05);
     heatmap.append("g")
       .style("font-size", 15)
@@ -40,7 +43,7 @@ function addHeatMap(id, dataUrl, interpolation)
     // Build Y scales and axis:
     var y = d3.scaleBand()
       .range([ height_, 0 ])
-      .domain(myVars)
+      .domain(yLabels)
       .padding(0.05);
     heatmap.append("g")
       .style("font-size", 15)
@@ -51,7 +54,7 @@ function addHeatMap(id, dataUrl, interpolation)
     /****** COLOR SETUP WITH GIVEN INTERPOLATION METHOD ******/
     var myColor = d3.scaleSequential()
       .interpolator(interpolation)
-      .domain([1,100])
+      .domain(domain)
 
       // colorbrewer ? 
       // var colors = colorbrewer.Set2[6];
@@ -77,7 +80,7 @@ function addHeatMap(id, dataUrl, interpolation)
     }
     var mousemove = function(d) {
       tooltip
-        .html("The exact value of this cell is: " + d.value)
+        .html("The exact value of this cell is: " + d.Value)
         
       var toolBox = d3.select("#valueBox")
         .style("left", (d3.event.pageX) + "px")
@@ -94,16 +97,16 @@ function addHeatMap(id, dataUrl, interpolation)
 
     /****** ADD VALUE SQUARES ******/
     heatmap.selectAll()
-      .data(data, function(d) {return d.group+':'+d.variable;})
+      .data(data, function(d) {return d.Year+':'+d.Age;})
       .enter()
       .append("rect")
-        .attr("x", function(d) { return x(d.group) })
-        .attr("y", function(d) { return y(d.variable) })
+        .attr("x", function(d) { return x(d.Year) })
+        .attr("y", function(d) { return y(d.Age) })
         .attr("rx", 4)
         .attr("ry", 4)
         .attr("width", x.bandwidth() )
         .attr("height", y.bandwidth() )
-        .style("fill", function(d) { return myColor(d.value)} )
+        .style("fill", function(d) { return myColor(d.Value)} )
         .style("stroke-width", 4)
         .style("stroke", "none")
         .style("opacity", 0.8)
@@ -145,6 +148,6 @@ function addHeatMap(id, dataUrl, interpolation)
       .style("fill", "grey")
       .style("max-width", 400)
       .text("time in different age groups.");
-  })
+  }
 }
 

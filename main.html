@@ -37,25 +37,24 @@
     </div>
   </div>
 
+<!--
   <div id="colorRange">
     <img src="https://raw.githubusercontent.com/d3/d3-scale-chromatic/master/img/Greys.png", height="30px" width="100%">
     <div id="rangeAxis" class="fulljustify"></div>
   </div>
-
+-->
 
   <!-- Create divs where the graphs will take place -->
   <div id="valueBox">
     <p id="exact-value"></p> <!--"exact value of this cell is: "-->
   </div>
-  <div id="heatmaps"> <!-- container for flex -->
+  <div id="maps"> <!-- container for flex -->
     <div id="disease"></div>
     <div id="violence"></div>
     <div id="mental_illness"></div>
     <div id="traffic"></div>
-  </div>
-
-  <!-- Create an element where the map will take place -->
-  <div id="mapView">  <!-- container for flex -->
+  
+    <!-- Create an element where the map will take place -->
     <div id="choroMap"></div>
 
     <!-- Create an element where the slider to the map will take place -->
@@ -73,13 +72,74 @@
   // set url to data
   var data1 = "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/heatmap_data.csv";
 
+var data = "data/finaldead.csv"
 
-// range axis
-d3.csv(data1, function(data) 
-{  
+// prepare data for heatmaps
+d3.csv(data, function(data) 
+{ 
+  // range axis
+//  createColorRangeAxis(data);
 
+  // 1 - cause of death: disease
+  var disease_data = selectData(data, 1);
+
+  // 2 - cause of death: mental illness
+  var mental_illness_data = selectData(data, 2);
+
+  //3 - cause of death: violence
+  var violence_data = selectData(data, 3);
+
+  //4 - cause of death: traffic
+  var traffic_data = selectData(data, 4);
+  
+  /*console.log(disease_data)
+  console.log(mental_illness_data)
+  console.log(violence_data)
+  console.log(traffic_data)*/
+
+  addHeatMap("disease", disease_data, d3.interpolateBlues, [100,160000]);
+  addHeatMap("violence", mental_illness_data, d3.interpolateGreens, [1,14000]);
+  addHeatMap("mental_illness", violence_data, d3.interpolatePurples, [1,150]);
+  addHeatMap("traffic", traffic_data, d3.interpolateReds, [1,800]);
+
+})
+
+
+  // create 4 heat maps
+  // args:    cause of death,   dataset,    colorrange 
+  /*addHeatMap("disease", data1, d3.interpolateBlues);
+  addHeatMap("violence", data1, d3.interpolateGreens);
+  addHeatMap("mental_illness", data1, d3.interpolatePurples);
+  addHeatMap("traffic", data1, d3.interpolateReds);*/
+
+  createSlider();
+  createChoropleth("choroMap");
+
+function selectData(data, diagnosis)
+{
+  var return_data = data.map(function(d)
+  { 
+    if(d.Region == 0 && d.Diagnosis == diagnosis){
+      return {
+        Year: d.Year.substr(2, d.Year.length),
+        Age: d.Age,
+        Value: d.Value
+      }
+    }
+  })
+
+  // remove undefined 
+  return_data = return_data.filter(function( element ) {
+   return element !== undefined;
+  })
+
+  return return_data;
+}
+
+function createColorRangeAxis(data)
+{
   // parse values strings to floats
-  var values = d3.map(data, function(d){return d.value;}).keys(); 
+  var values = d3.map(data, function(d){return d.Value;}).keys(); 
   for(var i = 0; i < values.length; ++i)
   {
     values[i] = parseFloat(values[i]);
@@ -99,18 +159,7 @@ d3.csv(data1, function(data)
     //console.log(Math.min(...values))
     //console.log(Math.max(...values))
     //console.log( ( d3.map(data, function(d){return d.value;}).keys() ))
-})
-
-  // create 4 heat maps
-  // args:    cause of death,   dataset,    colorrange 
-  addHeatMap("disease", data1, d3.interpolateBlues);
-  addHeatMap("violence", data1, d3.interpolateGreens);
-  addHeatMap("mental_illness", data1, d3.interpolatePurples);
-  addHeatMap("traffic", data1, d3.interpolateReds);
-
-  createSlider();
-  createChoropleth("choroMap");
-  
+}
 
 </script>
 
