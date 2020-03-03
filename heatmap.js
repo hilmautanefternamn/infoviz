@@ -1,11 +1,11 @@
 
 // set the dimensions and margins of the heat maps
-var margin = {top: 80, right: 25, bottom: 30, left: 40},
-  width_ = 550 - margin.left - margin.right,
-  height_ = 550 - margin.top - margin.bottom;
+var margin = {top: 80, right: 0, bottom: 60, left: 140},
+  width_ = 625 - margin.left - margin.right,
+  height_ = 580 - margin.top - margin.bottom;
 
 
-function addHeatMap(id, data, interpolation, domain)
+function addHeatMap(dataType, id, data, interpolation, domain)
 {
   /****** SET UP MAIN DIV FOR HEATMAP ******/
   id_ = "#" + id;
@@ -19,14 +19,23 @@ function addHeatMap(id, data, interpolation, domain)
 
 
   /****** READ DATA ******/
- // d3.csv(dataUrl, function(data) 
   {
-    // Labels of row and columns -> unique identifier of the column called 'group' and 'variable'
+    // Labels of row and columns
     var xLabels = d3.map(data, function(d){return d.Year;}).keys()
-    var yLabels = d3.map(data, function(d){return d.Age;}).keys()
+    var yLabels;
+    if(dataType == "ageGroups")
+    { 
+      yLabels = d3.map(data, function(d){return d.Diagnosis;}).keys()
+      yLabels.sort(); 
+    }
+    else
+    {
+      yLabels = d3.map(data, function(d){return d.Age;}).keys()
+      yLabels.sort(function (a,b) 
+      { return parseFloat(a.substr(0,2)) - parseFloat(b.substr(0,2)); });
+    }
+    
 
- //   console.log(xLabels)
- //   console.log(yLabels)
 
     /****** SCALES & AXISES ******/
     // x-scales & axis
@@ -35,7 +44,7 @@ function addHeatMap(id, data, interpolation, domain)
       .domain(xLabels)
       .padding(0.05);
     heatmap.append("g")
-      .style("font-size", 15)
+      .style("font-size", 12)
       .attr("transform", "translate(0," + height_ + ")")
       .call(d3.axisBottom(x).tickSize(0))
       .select(".domain").remove()
@@ -46,18 +55,16 @@ function addHeatMap(id, data, interpolation, domain)
       .domain(yLabels)
       .padding(0.05);
     heatmap.append("g")
-      .style("font-size", 15)
+      .style("font-size", 12)
       .call(d3.axisLeft(y).tickSize(0))
       .select(".domain").remove()
+
 
 
     /****** COLOR SETUP WITH GIVEN INTERPOLATION METHOD ******/
     var myColor = d3.scaleSequential()
       .interpolator(interpolation)
       .domain(domain)
-
-      // colorbrewer ? 
-      // var colors = colorbrewer.Set2[6];
 
 
     /****** CREATE TOOLTIP ******/
@@ -97,11 +104,20 @@ function addHeatMap(id, data, interpolation, domain)
 
     /****** ADD VALUE SQUARES ******/
     heatmap.selectAll()
-      .data(data, function(d) {return d.Year+':'+d.Age;})
+      .data(data, function(d) 
+      {
+        if(dataType == "ageGroups")
+          return d.Year+':'+d.Diagnosis;
+        return d.Year+':'+d.Age;
+      })
       .enter()
       .append("rect")
-        .attr("x", function(d) { return x(d.Year) })
-        .attr("y", function(d) { return y(d.Age) })
+        .attr("x", function(d){return x(d.Year)})
+        .attr("y", function(d) 
+          { if(dataType == "ageGroups")
+              return y(d.Diagnosis);
+            return y(d.Age);
+          })
         .attr("rx", 4)
         .attr("ry", 4)
         .attr("width", x.bandwidth() )
@@ -119,6 +135,21 @@ function addHeatMap(id, data, interpolation, domain)
     if(id == "mental_illness")
       id = "mental illness";
 
+    if(id == "Young_Adults")
+      id = "Young Adults";
+
+    var title = "Cause of death: ";
+    var sub1 = "Number of casualties caused by " + id + ", varying over ";
+    var sub2 = "time in different age groups.";
+
+    if(dataType == "ageGroups")
+    {
+      title = "Cause of death among: " ;
+      sub1 = "Number of casualties among " + id + ", caused ";
+      sub2 = " by different different diagnoses"
+    }
+
+
     // Add title to graph
     heatmap.append("text")
       .attr("x", 0)
@@ -126,7 +157,7 @@ function addHeatMap(id, data, interpolation, domain)
       .attr("text-anchor", "left")
       .style("font-size", "22px")
       .style("font-family", "'Raleway'")
-      .text("Cause of death: " + id);
+      .text(title + id);
 
       // Add subtitle to graph
     heatmap.append("text")
@@ -137,7 +168,7 @@ function addHeatMap(id, data, interpolation, domain)
       .style("font-family", "'Simonetta'")
       .style("fill", "grey")
       .style("max-width", 400)
-      .text("Number of casualties caused by " + id + ", varying over " );
+      .text(sub1);
 
     heatmap.append("text")
       .attr("x", 0)
@@ -147,7 +178,7 @@ function addHeatMap(id, data, interpolation, domain)
       .style("font-family", "'Simonetta'")
       .style("fill", "grey")
       .style("max-width", 400)
-      .text("time in different age groups.");
+      .text(sub2);
   }
 }
 
