@@ -2,25 +2,49 @@
 font-family: 'Raleway', ;
 font-family: 'Simonetta', ;*/
 
-#header
+#header {
+  width: 100%;
+  height: 200px;
+  position: relative;
+}
+
+#background, #foreground
 {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+}
+
+#background
+{
+	z-index: 1;
 	background-image: url("skull.png");
-  	background-repeat: repeat;
+	filter: brightness(0) saturate(100%) invert(27%) sepia(100%) saturate(1278%) hue-rotate(264deg) brightness(92%) contrast(105%);
+	background-repeat: repeat;
   	background-size: 70px auto;
   	padding-top: 10px;
   	margin-top: -5px;
 }
 
+#foreground
+{
+	z-index: 9999;
+}
+
+
 #colorRange
 {
-	margin-bottom: 50px;
+	margin-bottom: 40px;
 	width: 70%;
 }
 
-#rangeAxis g
+
+#rangeAxis text
 {
-	padding-left: 3.5%;
-	padding-right: 3.5%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: stretch;
 }
 
 
