@@ -4,6 +4,7 @@
 
 #folders
 lib/
+data/
 
 #stupid file
 .DS_Store
