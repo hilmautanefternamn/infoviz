@@ -103,6 +103,10 @@ function createChoropleth(id)
   }
 }
 
+// http://bl.ocks.org/darrenjaworski/5392389
+// http://bl.ocks.org/darrenjaworski/5397202
+
+// http://duspviz.mit.edu/d3-workshop/mapping-data-with-d3/
 
 function createSlider()
 {
