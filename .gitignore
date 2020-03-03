@@ -1,6 +1,11 @@
 #csv-files
-*.csv
-!finaldead.csv
+dead.csv
+deadper100000.csv
+dead1.csv
+dead2.csv
+dead3.csv
+dead4.csv
+
 
 #folders
 lib/
