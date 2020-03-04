@@ -129,3 +129,17 @@ button:hover:enabled
 	height: 22px;
 	width: 150px;
 }
+
+.ticktick
+{
+	width: 200px;
+	background-color: green;
+}
+#ageGroupMaps .ytick text
+{
+	transform: rotate(-90deg) translate(0px,-10px);
+}
+#ageGroupMaps .ytick
+{
+	text-anchor: middle;
+}

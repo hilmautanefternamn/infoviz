@@ -44,7 +44,7 @@ function addHeatMap(dataType, id, data, interpolation, domain)
       .domain(xLabels)
       .padding(0.05);
     heatmap.append("g")
-      .style("font-size", 12)
+      .style("font-size", 15)
       .attr("transform", "translate(0," + height_ + ")")
       .call(d3.axisBottom(x).tickSize(0))
       .select(".domain").remove()
@@ -55,7 +55,8 @@ function addHeatMap(dataType, id, data, interpolation, domain)
       .domain(yLabels)
       .padding(0.05);
     heatmap.append("g")
-      .style("font-size", 12)
+      .attr("class", "ytick")
+      .style("font-size", 15)
       .call(d3.axisLeft(y).tickSize(0))
       .select(".domain").remove()
 
