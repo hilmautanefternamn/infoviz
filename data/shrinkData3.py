@@ -2,7 +2,17 @@ import csv
 import pandas as pd
 import numpy as np
 
-df = pd.read_csv('deadper100000_2.csv', delimiter = ';', decimal = ',')     
+# Sums up all values within the same region and age group and put them in the same row
+# Removes all other rows
+
+# IN AND OUTPUT NAMES
+# deadper100000_2
+# deadper100000_3
+# dead2
+# dead3
+
+
+df = pd.read_csv('dead2.csv', delimiter = ';', decimal = ',')     
 
 
 
@@ -57,7 +67,7 @@ for i in range(1, len(df)):
 # Write with filter
 df = df[df.Värde != False]
 
-df.to_csv('deadper100000_3.csv', sep = ';', index = False)
+df.to_csv('dead3.csv', sep = ';', index = False)
 
 # TODO
 # make a fourth script that adds the values of all rows that has same

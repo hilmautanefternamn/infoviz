@@ -2,7 +2,17 @@ import csv
 import pandas as pd
 import numpy as np
 
-df = pd.read_csv('deadper100000_3.csv', delimiter = ';')     
+
+# Sum all values for certain age group's diagnosis within a region and year
+
+# IN AND OUTPUT NAMES
+# deadper100000_3
+# deadper100000_4
+# dead3
+# dead4
+
+
+df = pd.read_csv('dead3.csv', delimiter = ';')     
 
 
 
@@ -48,4 +58,4 @@ for year in range(1997, 2019):
 # # Write with filter
 df = df[df.Mått == False]
 
-df.to_csv('finaldeadper100000.csv', sep = ';', index = False)
+df.to_csv('dead4.csv', sep = ';', index = False)
