@@ -140,13 +140,13 @@ function addHeatMap(dataType, id, data, interpolation, domain)
       id = "Young Adults";
 
     var title = "Cause of death: ";
-    var sub1 = "Percent of casualties caused by " + id + ", varying over ";
+    var sub1 = "Casualties caused by " + id + ", varying over ";
     var sub2 = "time in different age groups.";
 
     if(dataType == "ageGroups")
     {
       title = "Cause of death among: " ;
-      sub1 = "Percent of casualties among " + id + ", caused ";
+      sub1 = "Number of casualties among " + id + ", caused ";
       sub2 = " by different different diagnoses"
     }
 

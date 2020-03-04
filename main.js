@@ -10,7 +10,7 @@ window.onload = function()
 // violence & traffic
 function diagnosesHeatMap()
 {
-var data = "data/finaldeadper100000.csv"
+var data = "data/finaldeadvsAlive.csv"
 
   // prepare data for heatmaps
   d3.csv(data, function(data) 
@@ -28,9 +28,14 @@ var data = "data/finaldeadper100000.csv"
     var traffic_data = selectDiagnosisData(data, 4);
     // [1, 15000], [1,2000], [0,5], [1,10]
     addHeatMap("diagnosis", "disease", disease_data, d3.interpolateBlues, findMinMax(disease_data));
-    addHeatMap("diagnosis", "violence", mental_illness_data, d3.interpolateGreens, findMinMax(violence_data));
-    addHeatMap("diagnosis", "mental_illness", violence_data, d3.interpolatePurples, findMinMax(mental_illness_data));
+    addHeatMap("diagnosis", "violence", mental_illness_data, d3.interpolateGreens, [0,2000]);
+    addHeatMap("diagnosis", "mental_illness", violence_data, d3.interpolatePurples, [0,5]);
     addHeatMap("diagnosis", "traffic", traffic_data, d3.interpolateReds, findMinMax(traffic_data));
+
+    console.log(findMinMax(mental_illness_data))
+    console.log(findMinMax(violence_data))
+    console.log(findMinMax(disease_data))
+    console.log(findMinMax(traffic_data))
 
   })
 }
@@ -142,8 +147,6 @@ var return_data = data.map(function(d)
     }
   }
 })
-
-
 // remove slots with undefined
 return_data = return_data.filter(function( element ) {
  return element !== undefined;
@@ -156,12 +159,11 @@ return return_data;
 function findMinMax(data)
 {
 	// parse values strings to floats
-    var values = d3.map(data, function(d){return d.Value;}).keys(); 
+    var values = d3.map(data, function(d){return d.Value;}).keys()
+    
     for(var i = 0; i < values.length; ++i)
-    {
-      values[i] = parseFloat(values[i]);
-    }
-
+      	values[i] = parseFloat(values[i]);
+    
     return [ Math.min(...values), Math.max(...values) ];
 }
 
