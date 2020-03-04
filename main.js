@@ -27,10 +27,10 @@ var data = "data/finaldeadper100000.csv"
     //4 - cause of death: traffic
     var traffic_data = selectDiagnosisData(data, 4);
     // [1, 15000], [1,2000], [0,5], [1,10]
-    addHeatMap("diagnosis", "disease", disease_data, d3.interpolateBlues, [0,1]);
-    addHeatMap("diagnosis", "violence", mental_illness_data, d3.interpolateGreens, [0,1]);
-    addHeatMap("diagnosis", "mental_illness", violence_data, d3.interpolatePurples, [0,1]);
-    addHeatMap("diagnosis", "traffic", traffic_data, d3.interpolateReds, [0,1]);
+    addHeatMap("diagnosis", "disease", disease_data, d3.interpolateBlues, findMinMax(disease_data));
+    addHeatMap("diagnosis", "violence", mental_illness_data, d3.interpolateGreens, findMinMax(violence_data));
+    addHeatMap("diagnosis", "mental_illness", violence_data, d3.interpolatePurples, findMinMax(mental_illness_data));
+    addHeatMap("diagnosis", "traffic", traffic_data, d3.interpolateReds, findMinMax(traffic_data));
 
   })
 }
@@ -94,6 +94,8 @@ d3.csv(data, function(data)
   // 1 - age group: children
   var child_data = selectAgeGroupData(data, 1);
 
+  console.log()
+
   // 2 - age group: young adults
   var young_adult_data = selectAgeGroupData(data, 2);
 
@@ -103,10 +105,10 @@ d3.csv(data, function(data)
   //4 - age group: seniors
   var senior_data = selectAgeGroupData(data, 4);
 
-  addHeatMap("ageGroups", "Children", child_data, d3.interpolateBlues, [0,80]);
-  addHeatMap("ageGroups", "Young_Adults", young_adult_data, d3.interpolateGreens, [1,20]);
-  addHeatMap("ageGroups", "Adults", adult_data, d3.interpolatePurples, [1,80]);
-  addHeatMap("ageGroups", "Seniors", senior_data, d3.interpolateReds, [1,30000]);
+  addHeatMap("ageGroups", "Children", child_data, d3.interpolateBlues, findMinMax(child_data));
+  addHeatMap("ageGroups", "Young_Adults", young_adult_data, d3.interpolateGreens, findMinMax(young_adult_data));
+  addHeatMap("ageGroups", "Adults", adult_data, d3.interpolatePurples, findMinMax(adult_data));
+  addHeatMap("ageGroups", "Seniors", senior_data, d3.interpolateReds, findMinMax(senior_data));
 
 })
 }
@@ -150,6 +152,18 @@ return_data = return_data.filter(function( element ) {
 return return_data;
 }
 
+
+function findMinMax(data)
+{
+	// parse values strings to floats
+    var values = d3.map(data, function(d){return d.Value;}).keys(); 
+    for(var i = 0; i < values.length; ++i)
+    {
+      values[i] = parseFloat(values[i]);
+    }
+
+    return [ Math.min(...values), Math.max(...values) ];
+}
 
   /***** NOT USED ATM ******
 
