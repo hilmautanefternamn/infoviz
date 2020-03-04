@@ -59,13 +59,20 @@ h4
 }
 
 /* source of data */
-a
+#links
 {
 	position: absolute;
+	display: flex;
+	flex-direction: column;
 	right:0;
 	top:0;
 	font-family: 'Simonetta';
 	font-size: 18px;
+}
+
+a:hover
+{
+	color: #e988f7;
 }
 
 /* swich heatmaps */
