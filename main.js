@@ -26,11 +26,11 @@ var data = "data/finaldeadper100000.csv"
 
     //4 - cause of death: traffic
     var traffic_data = selectDiagnosisData(data, 4);
-    
-    addHeatMap("diagnosis", "disease", disease_data, d3.interpolateBlues, [100,15000]);
-    addHeatMap("diagnosis", "violence", mental_illness_data, d3.interpolateGreens, [1,2000]);
-    addHeatMap("diagnosis", "mental_illness", violence_data, d3.interpolatePurples, [0,5]);
-    addHeatMap("diagnosis", "traffic", traffic_data, d3.interpolateReds, [1,10]);
+    // [1, 15000], [1,2000], [0,5], [1,10]
+    addHeatMap("diagnosis", "disease", disease_data, d3.interpolateBlues, [0,1]);
+    addHeatMap("diagnosis", "violence", mental_illness_data, d3.interpolateGreens, [0,1]);
+    addHeatMap("diagnosis", "mental_illness", violence_data, d3.interpolatePurples, [0,1]);
+    addHeatMap("diagnosis", "traffic", traffic_data, d3.interpolateReds, [0,1]);
 
   })
 }
@@ -104,7 +104,7 @@ d3.csv(data, function(data)
   var senior_data = selectAgeGroupData(data, 4);
 
   addHeatMap("ageGroups", "Children", child_data, d3.interpolateBlues, [0,80]);
-  addHeatMap("ageGroups", "Young_Adults", young_adult_data, d3.interpolateGreens, [1,25]);
+  addHeatMap("ageGroups", "Young_Adults", young_adult_data, d3.interpolateGreens, [1,20]);
   addHeatMap("ageGroups", "Adults", adult_data, d3.interpolatePurples, [1,80]);
   addHeatMap("ageGroups", "Seniors", senior_data, d3.interpolateReds, [1,30000]);
 
