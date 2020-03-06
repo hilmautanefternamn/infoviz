@@ -4,6 +4,7 @@ window.onload = function()
 	diagnosesButton();
 }
 
+/************** HEAT MAP STUFF  ******************/
 // HEAT MAP WITH YEARS and CAUSE OF DEATH
 // Load and prepare data to create one heatmap
 // for each cause of death: diseases, mental illness,
@@ -39,23 +40,25 @@ var data = "data/finaldeadvsAlive.csv"
 
   })
 }
-// helper function to change between sets of heatmaps
+// helper function to change between maps
 var isFirstClick = true;
 function diagnosesButton()
 {
-document.getElementById('diagnosisMaps').style.display = "flex";
-document.getElementById('ageGroupMaps').style.display = "none";
-document.getElementsByTagName('button')[0].disabled = false;
-document.getElementsByTagName('button')[1].disabled = true;
+	document.getElementById('choropleth').style.display = "none";
+	document.getElementById('diagnosisMaps').style.display = "flex";
+	document.getElementById('ageGroupMaps').style.display = "none";
+	document.getElementsByTagName('button')[0].disabled = false;
+	document.getElementsByTagName('button')[1].disabled = true;
+	document.getElementsByTagName('button')[2].disabled = false;
 
-if(isFirstClick)
-  diagnosesHeatMap();
+	if(isFirstClick)
+	  diagnosesHeatMap();
 
-isFirstClick = false;
+	isFirstClick = false;
 }
 
 // map age groups
-var ageGroups = {"1": "0-4", "2": "5-6", "3": "10-24", "4": "15-19", 
+var ageGroups = {"1": "0-4", "2": "5-9", "3": "10-14", "4": "15-19", 
 "5": "20-24", "6": "25-29", "7": "30-34", "8": "35-39", "9": "40-44", 
 "10": "45-49", "11": "50-54", "12": "55-59", "13": "60-64", "14": "65-69", 
 "15": "70-74", "16": "75-79", "17": "80-84", "18": "85+"};
@@ -117,19 +120,22 @@ d3.csv(data, function(data)
 
 })
 }
-// helper function to change between sets of heatmaps
+// helper function to change between maps
 var firstClick = true;
 function ageGroupButton()
-{
-  document.getElementById('diagnosisMaps').style.display = "none";
-  document.getElementById('ageGroupMaps').style.display = "flex";
-  document.getElementsByTagName('button')[0].disabled = true;
-  document.getElementsByTagName('button')[1].disabled = false;
+{	
+	document.getElementById('choropleth').style.display = "none";
+	document.getElementById('diagnosisMaps').style.display = "none";
+	document.getElementById('ageGroupMaps').style.display = "flex";
 
-  if(firstClick)
-    ageGroupHeatMap();
+	document.getElementsByTagName('button')[0].disabled = true;
+	document.getElementsByTagName('button')[1].disabled = false;
+	document.getElementsByTagName('button')[2].disabled = false;
 
-  firstClick = false;
+	if(firstClick)
+	ageGroupHeatMap();
+
+	firstClick = false;
 }
 
 var diagnoses = {"1": "disease", "2": "violence", "3":"mental illness", "4": "traffic" };
@@ -139,17 +145,17 @@ function selectAgeGroupData(data, age)
 {
 var return_data = data.map(function(d)
 { 
-  if(d.Region == 0 && d.Age == age){
-    return {
-      Year: d.Year.substr(2, d.Year.length),
-      Diagnosis: diagnoses[d.Diagnosis],
-      Value: d.Value
-    }
-  }
+	if(d.Region == 0 && d.Age == age){
+		return {
+			Year: d.Year.substr(2, d.Year.length),
+			Diagnosis: diagnoses[d.Diagnosis],
+			Value: d.Value
+		}
+	}
 })
 // remove slots with undefined
 return_data = return_data.filter(function( element ) {
- return element !== undefined;
+ 	return element !== undefined;
 })
 
 return return_data;
@@ -165,6 +171,85 @@ function findMinMax(data)
       	values[i] = parseFloat(values[i]);
     
     return [ Math.min(...values), Math.max(...values) ];
+}
+
+
+
+
+/************** CHOROPLETH STUFF  ******************/
+var regions = { "1" : 0, "2" : 0, "3" : 0, "4" : 0, "5" : 0, "6" : 0, "7" : 0,
+	"8" : 0, "9" : 0, "10" : 0, "11" : 0, "12" : 0, "13" : 0, "14" : 0, "15" : 0,
+	"16" : 0, "17" : 0, "18" : 0, "19" : 0, "20" : 0, "21" : 0, "22" : 0,
+	"23" : 0, "24" : 0, "25" : 0};
+
+
+function selectRegionData(data, year)
+{
+	var names = { "1" : "Stockholms län", "2" : 0, "3" : "Uppsala län", "4" : "Södermanlands län", 
+	  "5" : "Östergötlands län", "6" : "Jönköpings län", "7" : "Kronobergs län", "8" : "Kalmar län", 
+	  "9" : "Gotlands län", "10" : "Blekinge län", "11" : 0, "12" : "Skåne län", "13" : "Hallands län", 
+	  "14" : "Västra Götalands län", "15" : 0, "16" : 0, "17" : "Värmlands län", "18" : "Örebro län", 
+	  "19" : "Västmanlands län", "20" : "Dalarnas län", "21" : "Gävleborgs län", "22" : "Västernorrlands län",
+	  "23" : "Jämtlands län", "24" : "Västerbottens län", "25" : "Norrbottens län"};
+
+	data.map(function(d)
+	{ 
+	  if(d.Year == year && d.Region != 0 && d.Age == 19){
+	    for(var i = 1; i < 26; ++i)
+	    {
+	      if(d.Region == i)
+	        regions[i] += parseFloat(d.Value);
+	    }
+	  }
+	})
+
+	// map regions to names
+	var return_data = {};
+	for(var i = 1; i < 26; ++i)
+	  return_data[names[i]] = regions[i];         
+
+
+	return return_data;
+}
+
+function getDomain()
+{
+	var minVal = regions[1];
+	var maxVal = regions[1];
+
+	for(var i = 2; i < 26; ++i)
+	{
+  		if(regions[i] != 0)
+	  	{
+		    if(regions[i] < minVal)
+		    	minVal = regions[i];
+		  
+		    if(regions[i] > maxVal)
+	      		maxVal = regions[i];
+	  	}
+	}
+	return [maxVal, minVal];
+}
+
+// helper function to change between maps
+var isClicked = true;
+function choroplethButton()
+{
+	
+	document.getElementById('choropleth').style.display = "flex";
+	document.getElementById('ageGroupMaps').style.display = "none";
+	document.getElementById('diagnosisMaps').style.display = "none";
+	document.getElementsByTagName('button')[0].disabled = false;
+	document.getElementsByTagName('button')[1].disabled = false;
+	document.getElementsByTagName('button')[2].disabled = true;
+
+	if(isClicked)
+	{
+		createSlider("1997");
+	  //	createChoropleth("choroMap", "1997");
+	}
+
+	isClicked = false;
 }
 
   /***** NOT USED ATM ******

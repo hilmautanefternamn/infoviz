@@ -117,7 +117,7 @@ button:hover:enabled
 }
 
 /******* MAP CONTAINERS *******/
-#diagnosisMaps, #ageGroupMaps
+#diagnosisMaps, #ageGroupMaps, #choropleth
 {
 	display: flex;
 	flex-wrap: wrap;

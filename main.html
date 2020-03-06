@@ -45,6 +45,7 @@
   <div id="buttons">
     <button type="button" onclick="ageGroupButton()">Age Groups</button>
     <button type="button" onclick="diagnosesButton()">Diagnoses</button>
+    <button type="button" onclick="choroplethButton()">Choropleth</button>
   </div>
 
 <!--
@@ -58,17 +59,26 @@
   <div id="valueBox">
     <p id="exact-value"></p> <!--"exact value of this cell is: "-->
   </div>
-  <div id="diagnosisMaps"> <!-- container for flex -->
 
-    <!-- for diagnosis heatmaps -->
+  <!-- for diagnosis heatmaps -->
+  <div id="diagnosisMaps"> <!-- container for flex -->
     <div id="disease"></div>
     <div id="violence"></div>
     <div id="mental_illness"></div>
     <div id="traffic"></div>
-  
-    <!-- Create an element where the map will take place -->
-    <div id="choroMap"></div>
+  </div>
 
+  <!-- for age groups heatmaps -->
+  <div id="ageGroupMaps"> <!-- container for flex -->
+    <div id="Children"></div>
+    <div id="Young_Adults"></div>
+    <div id="Adults"></div>
+    <div id="Seniors"></div>
+  </div>
+
+    <!-- Create an element where the map will take place -->
+  <div id="choropleth">
+    <div id="choroMap"></div>
     <!-- Create an element where the slider to the map will take place -->
     <div id="slider">
       <p id="current-slider-value"></p>
@@ -76,22 +86,8 @@
     </div>
   </div>
 
-  <div id="ageGroupMaps"> <!-- container for flex -->
-      <!-- for age groups heatmaps -->
-    <div id="Children"></div>
-    <div id="Young_Adults"></div>
-    <div id="Adults"></div>
-    <div id="Seniors"></div>
-  </div>
-
 </body>
 
-<script>
-  /******   NO MAP ATM :C
-    createSlider();
-    createChoropleth("choroMap");
-    */
-</script>
 
 
 
