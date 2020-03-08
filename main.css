@@ -63,6 +63,7 @@ h4
 	position: absolute;
 	display: flex;
 	flex-direction: column;
+	text-align: right;
 	right:0;
 	top:0;
 	font-family: 'Simonetta';

@@ -5,8 +5,6 @@ var margin = {top: 150, right: 0, bottom: 20, left: 40},
 
 function createChoropleth(id, year)
 {
-  console.log(year)
-  
   /****** SET UP MAIN DIV FOR CHOROPLETH MAP ******/
   id = "#" + id;
   var choromap = d3.select(id)
@@ -135,11 +133,9 @@ function createSlider(startYear)
       .text(d3.format('1')(val))
       .style("font-size", "22px")
       .style("font-family", "'Raleway'")
-      .call(createChoropleth("choromap", val));
 
-      //d3.select("#svg_id").remove();
-      //createChoropleth("choromap", val);
-      //console.log(val)
+      d3.select("#svg_id").remove();
+      choroplethButton(val);
     });
 
   var gVertical = d3

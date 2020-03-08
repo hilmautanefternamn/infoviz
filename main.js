@@ -1,10 +1,11 @@
 
 window.onload = function()
 {
-	diagnosesButton();
+	choroplethButton(false);
 }
 
 /************** HEAT MAP STUFF  ******************/
+
 // HEAT MAP WITH YEARS and CAUSE OF DEATH
 // Load and prepare data to create one heatmap
 // for each cause of death: diseases, mental illness,
@@ -33,11 +34,12 @@ var data = "data/finaldeadvsAlive.csv"
     addHeatMap("diagnosis", "mental_illness", violence_data, d3.interpolatePurples, [0,5]);
     addHeatMap("diagnosis", "traffic", traffic_data, d3.interpolateReds, findMinMax(traffic_data));
 
+/*	why this does not work for all is a mysterium
     console.log(findMinMax(mental_illness_data))
     console.log(findMinMax(violence_data))
     console.log(findMinMax(disease_data))
     console.log(findMinMax(traffic_data))
-
+*/
   })
 }
 // helper function to change between maps
@@ -85,7 +87,6 @@ return_data = return_data.filter(function( element ) {
 
 return return_data;
 }
-
 
 
 // HEAT MAP WITH YEAR and AGE GROUPS
@@ -228,14 +229,14 @@ function getDomain()
 	      		maxVal = regions[i];
 	  	}
 	}
+	console.log("max: " + maxVal + " min: " + minVal )
 	return [maxVal, minVal];
 }
 
 // helper function to change between maps
 var isClicked = true;
-function choroplethButton()
+function choroplethButton(year)
 {
-	
 	document.getElementById('choropleth').style.display = "flex";
 	document.getElementById('ageGroupMaps').style.display = "none";
 	document.getElementById('diagnosisMaps').style.display = "none";
@@ -245,11 +246,19 @@ function choroplethButton()
 
 	if(isClicked)
 	{
-		createSlider("1997");
-	  //	createChoropleth("choroMap", "1997");
+		console.log("in isClicked")
+		createSlider("2018");
+		createChoropleth("choroMap", "2018");
+		isClicked = false;	
 	}
 
-	isClicked = false;
+	if(year != false)
+	{
+		createChoropleth("choroMap", year);
+		console.log("year: " + year)
+	}
+
+	
 }
 
   /***** NOT USED ATM ******
