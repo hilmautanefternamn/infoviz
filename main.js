@@ -1,7 +1,7 @@
 
 window.onload = function()
 {
-	choroplethButton(false);
+	diagnosesButton();
 }
 
 /************** HEAT MAP STUFF  ******************/
