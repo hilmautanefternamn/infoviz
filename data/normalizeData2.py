@@ -109,7 +109,7 @@ for year in range(1997, 2019):
         rows_2 = rows.loc[df['Ålder'] == age]       # All the rows corresponding to one age group within one year
         
         index = rows_2.index.values                 # All the concerned indices
-        df.loc[index, 'Värde'] = rows_2['Värde'] / df2[str(year)][age-1]
+        df.loc[index, 'Värde'] = rows_2['Värde'] / df2[str(year)][age-1]*100000
 
         # print (df.loc[index].loc[df['Region'] == 0]['Värde'].sum())       # Should sum to 1
 
