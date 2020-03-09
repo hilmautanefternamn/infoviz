@@ -103,8 +103,6 @@ d3.csv(data, function(data)
   // 1 - age group: children
   var child_data = selectAgeGroupData(data, 1);
 
-  console.log()
-
   // 2 - age group: young adults
   var young_adult_data = selectAgeGroupData(data, 2);
 
