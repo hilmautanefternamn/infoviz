@@ -1,4 +1,9 @@
 
+  /************************
+  *       HEAT MAP        *
+  *     code from d3.js   *
+  ************************/
+
 // set the dimensions and margins of the heat maps
 var margin = {top: 80, right: 0, bottom: 60, left: 140},
   width_ = 625 - margin.left - margin.right,

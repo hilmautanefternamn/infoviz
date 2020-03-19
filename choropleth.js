@@ -1,3 +1,7 @@
+  /**************************
+  *      CHOROPLETH MAP     *
+  *     code from d3.js     *
+  **************************/
 
 var margin = {top: 150, right: 0, bottom: 20, left: 40},
   width = 500 - margin.left - margin.right,

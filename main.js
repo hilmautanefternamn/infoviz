@@ -12,7 +12,7 @@ window.onload = function()
 // violence & traffic
 function diagnosesHeatMap()
 {
-var data = "data/finaldeadvsAlive.csv"
+var data = "data/finaldeadper100000.csv"
 
   // prepare data for heatmaps
   d3.csv(data, function(data) 
@@ -30,8 +30,8 @@ var data = "data/finaldeadvsAlive.csv"
     var traffic_data = selectDiagnosisData(data, 4);
     // [1, 15000], [1,2000], [0,5], [1,10]
     addHeatMap("diagnosis", "disease", disease_data, d3.interpolateBlues, findMinMax(disease_data));
-    addHeatMap("diagnosis", "violence", mental_illness_data, d3.interpolateGreens, [0,2000]);
-    addHeatMap("diagnosis", "mental_illness", violence_data, d3.interpolatePurples, [0,5]);
+    addHeatMap("diagnosis", "violence", mental_illness_data, d3.interpolateGreens, findMinMax(mental_illness_data));	//[0,2000]
+    addHeatMap("diagnosis", "mental_illness", violence_data, d3.interpolatePurples, findMinMax(violence_data)); //[0,5]
     addHeatMap("diagnosis", "traffic", traffic_data, d3.interpolateReds, findMinMax(traffic_data));
 
 /*	why this does not work for all is a mysterium
@@ -95,24 +95,30 @@ return return_data;
 // adults & seniors
 function ageGroupHeatMap()
 {
-var data = "data/dead_age_group.csv"
+var data = "data/dead_ageGroup.csv"
 
 // prepare data for heatmaps
 d3.csv(data, function(data) 
 { 
-  // 1 - age group: children
+  // 1 - age group: Children [0,14]
   var child_data = selectAgeGroupData(data, 1);
 
-  // 2 - age group: young adults
-  var young_adult_data = selectAgeGroupData(data, 2);
+  //3 - age group: youth [15,24]
+  var youth_data = selectAgeGroupData(data, 2);
 
-  //3 - age group: adults
-  var adult_data = selectAgeGroupData(data, 3);
+  // 3 - age group: young adults [25-39]
+  var young_adult_data = selectAgeGroupData(data, 3);
 
-  //4 - age group: seniors
-  var senior_data = selectAgeGroupData(data, 4);
+  //4 - age group: adults [40-64]
+  var adult_data = selectAgeGroupData(data, 4);
+
+  //5 - age group: seniors [65+]
+  var senior_data = selectAgeGroupData(data, 5);
+
+  console.log(senior_data)
 
   addHeatMap("ageGroups", "Children", child_data, d3.interpolateBlues, findMinMax(child_data));
+  addHeatMap("ageGroups", "Youth", youth_data, d3.interpolateOranges, findMinMax(youth_data));
   addHeatMap("ageGroups", "Young_Adults", young_adult_data, d3.interpolateGreens, findMinMax(young_adult_data));
   addHeatMap("ageGroups", "Adults", adult_data, d3.interpolatePurples, findMinMax(adult_data));
   addHeatMap("ageGroups", "Seniors", senior_data, d3.interpolateReds, findMinMax(senior_data));
